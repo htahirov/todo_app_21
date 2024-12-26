@@ -8,6 +8,4 @@ class TodoModel {
   String title;
   String description;
   bool isChecked;
-
-  static final List<TodoModel> todos = [];
 }

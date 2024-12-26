@@ -30,27 +30,32 @@ class _CustomTileState extends State<CustomTile> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        _isChecked = !_isChecked;
-        setState(() {});
-      },
-      title: Text(
-        widget.todo.title,
-        style: TextStyle(decoration: _textDecoration),
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        color: AppColors.tileColor,
+        borderRadius: AppRadiuses.a16,
       ),
-      subtitle: Text(
-        widget.todo.description,
-        style: TextStyle(decoration: _textDecoration),
-      ),
-      tileColor: AppColors.tileColor,
-      shape: AppRadiuses.aR16,
-      trailing: Checkbox.adaptive(
-        value: _isChecked,
-        onChanged: (v) {
-          _isChecked = v!;
+      child: ListTile(
+        onTap: () {
+          _isChecked = !_isChecked;
           setState(() {});
         },
+        title: Text(
+          widget.todo.title,
+          style: TextStyle(decoration: _textDecoration),
+        ),
+        subtitle: Text(
+          widget.todo.description,
+          style: TextStyle(decoration: _textDecoration),
+        ),
+        shape: AppRadiuses.aR16,
+        trailing: Checkbox.adaptive(
+          value: _isChecked,
+          onChanged: (v) {
+            _isChecked = v!;
+            setState(() {});
+          },
+        ),
       ),
     );
   }
