@@ -68,7 +68,7 @@ class DeletePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () => todoProvider.deleteCheckedTodos(),
             child: const Icon(Icons.clear),
           ),
           10.h,
