@@ -38,6 +38,7 @@ class _CustomTileState extends State<CustomTile> {
       child: ListTile(
         onTap: () {
           _isChecked = !_isChecked;
+           widget.todo.isChecked = _isChecked;
           setState(() {});
         },
         title: Text(
@@ -53,6 +54,7 @@ class _CustomTileState extends State<CustomTile> {
           value: _isChecked,
           onChanged: (v) {
             _isChecked = v!;
+            widget.todo.isChecked = v;
             setState(() {});
           },
         ),

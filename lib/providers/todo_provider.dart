@@ -9,7 +9,7 @@ class TodoProvider extends ChangeNotifier {
   late final titleController = TextEditingController();
   late final descriptionController = TextEditingController();
 
-  List<TodoModel> _todos = [];
+  final List<TodoModel> _todos = [];
   final List<TodoModel> _deletedTodos = [];
 
   List<TodoModel> get deletedTodos => _deletedTodos;
@@ -88,6 +88,11 @@ class TodoProvider extends ChangeNotifier {
     _deletedTodos.clear();
     notifyListeners();
   }
+
+  void deleteCheckedTodos() {
+  _deletedTodos.removeWhere((todo) => todo.isChecked);
+  notifyListeners();
+}
 
   void _clearInputsAndCloseSheet(BuildContext context) {
     Go.pop(context);
