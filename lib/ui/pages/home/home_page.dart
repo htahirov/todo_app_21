@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app_flutter/utils/helpers/go.dart';
+import 'package:todo_app_flutter/utils/helpers/pager.dart';
 
 import '../../../providers/todo_provider.dart';
 import '../../../utils/constants/app_colors.dart';
@@ -13,6 +15,7 @@ import '../../../utils/extensions/num_extensions.dart';
 import '../../widgets/custom_input.dart';
 import '../../widgets/custom_tile.dart';
 import 'widgets/add_or_update_button.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,9 +25,8 @@ class HomePage extends StatelessWidget {
     final todoProvider = context.read<TodoProvider>();
     log('Screen rebuilding..');
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primary,
-        title: const Text('Todo Page'),
+      appBar: CustomAppBar.all(
+        onTapAction: () => Go.to(context, Pager.delete(context)),
       ),
       body: Consumer<TodoProvider>(
         builder: (_, __, ___) {

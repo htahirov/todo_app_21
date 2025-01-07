@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -8,6 +9,7 @@ class TodoHiveService {
   static Future<void> saveTodo(List<TodoModel> todoList) async {
     final box = await Hive.openBox<String>('todoBox');
     final list = todoList.map((e) => e.toJson()).toList();
+    log('Map list: $list');
     final encodedData = jsonEncode(list);
     await box.put('todoKey', encodedData);
   }
@@ -16,6 +18,7 @@ class TodoHiveService {
     final box = await Hive.openBox<String>('todoBox');
     final list = box.get('todoKey') ?? '[]';
     final List todos = jsonDecode(list);
-    return todos.map((e) => TodoModel.fromJson(e)).toList();
+    final todoList = todos.map((e) => TodoModel.fromJson(e)).toList();
+    return todoList;
   }
 }

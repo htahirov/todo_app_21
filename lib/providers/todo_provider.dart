@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import '../data/models/todo_model.dart';
-import '../data/services/todo_hive_service.dart';
 import '../utils/helpers/go.dart';
 
 class TodoProvider extends ChangeNotifier {
@@ -11,10 +10,15 @@ class TodoProvider extends ChangeNotifier {
   late final descriptionController = TextEditingController();
 
   List<TodoModel> _todos = [];
+  final List<TodoModel> _deletedTodos = [];
+
+  List<TodoModel> get deletedTodos => _deletedTodos;
+
+  int get deletedTodosCount => _deletedTodos.length;
 
   Future<List<TodoModel>> getTodos() async {
     log('Reload');
-    _todos = await TodoHiveService.getTodos();
+    // _todos = await TodoHiveService.getTodos();
     return _todos;
   }
 
@@ -27,7 +31,7 @@ class TodoProvider extends ChangeNotifier {
       ),
     );
 
-    await TodoHiveService.saveTodo(_todos);
+    // await TodoHiveService.saveTodo(_todos);
 
     notifyListeners();
     _clearInputsAndCloseSheet(context);
@@ -44,7 +48,7 @@ class TodoProvider extends ChangeNotifier {
       description: descriptionController.text,
     );
 
-    await TodoHiveService.saveTodo(_todos);
+    // await TodoHiveService.saveTodo(_todos);
 
     _clearInputsAndCloseSheet(context);
 
@@ -52,8 +56,36 @@ class TodoProvider extends ChangeNotifier {
   }
 
   void deleteTodo(String id) async {
-    _todos.removeWhere((e) => e.id == id);
-    await TodoHiveService.saveTodo(_todos);
+    _todos.removeWhere((e) {
+      if (e.id == id) {
+        _deletedTodos.add(e);
+        return true;
+      }
+      return false;
+    });
+    // await TodoHiveService.saveTodo(_todos);
+    notifyListeners();
+  }
+
+  void restoreTodo(String id) {
+    _deletedTodos.removeWhere((e) {
+      if (e.id == id) {
+        _todos.add(e);
+        return true;
+      }
+      return false;
+    });
+    // await TodoHiveService.saveTodo(_todos);
+    notifyListeners();
+  }
+
+  void permanentlyDeleteTodoById(String id) {
+    _deletedTodos.removeWhere((e) => e.id == id);
+    notifyListeners();
+  }
+
+  void permanentlyDeleteAll() {
+    _deletedTodos.clear();
     notifyListeners();
   }
 
